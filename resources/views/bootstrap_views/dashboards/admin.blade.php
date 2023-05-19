@@ -1,0 +1,61 @@
+@extends('bootstrap_views.layout.main')
+@section('content')
+    <div class="container-fluid">
+        <div class="row vh-100">
+            @include('bootstrap_views.partials.sidenav')
+            <div class="col-lg-10 col-sm-12 display-data mt-5">
+                @include('bootstrap_views.partials.system_message')
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <table class="table table-sm table-hover mt-5" id="adminTable">
+                            <thead class="bg-dark-custom thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">SurName</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col" style="width: 28%">Actions</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->surname }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->role->role_name }}</td>
+                                        <td class="{{ $user->is_active ? 'text-success' : 'text-danger' }}">
+                                            @if ($user->is_active)
+                                                {{ 'Active' }}
+                                            @else
+                                                {{ 'Inactive' }}
+                                            @endif
+                                        </td>
+                                        <td class="d-flex justify-content-around flex-wrap">
+
+                                            <a class="btn btn-sm btn-info rounded-pill px-3"
+                                                href="{{ route('change.status', $user->id) }}">{{ $user->is_active ? 'Deactivate' : 'Activate' }}</a>
+
+                                            <a class="btn btn-sm btn-success rounded-pill px-3"
+                                                href="{{ route('view.user', $user->id) }}">View</a>
+
+
+                                            <button type="submit"
+                                                class="btn btn-sm btn-danger rounded-pill px-3 btn-archive"
+                                                data-id="{{ $user->id }}">Archive User</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+@endsection
